@@ -8,7 +8,7 @@ WHERE ship_city LIKE '%burg%'
 SELECT order_id, customer_id, freight, ship_country
 FROM orders
 WHERE ship_country LIKE 'P%'
-ORDER BY freight DESC
+ORDER BY freight DESC LIMIT 10
 
 -- 3. имя, фамилию и телефон сотрудников, у которых в данных отсутствует регион (см таблицу employees)
 SELECT last_name, first_name, home_phone
