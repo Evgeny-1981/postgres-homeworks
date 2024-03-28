@@ -1,6 +1,8 @@
 -- Напишите запросы, которые выводят следующую информацию:
 -- 1. заказы, доставленные в страны France, Germany, Spain (таблица orders, колонка ship_country)
-SELECT ...
+SELECT order_id, customer_id, employee_id, order_date, required_date, shipped_date, ship_via, freight, ship_name, ship_address, ship_city, ship_region, ship_postal_code, ship_country
+	FROM public.orders
+	WHERE ship_country IN ('France', 'Germany', 'Spain');
 
 -- 2. уникальные страны и города, куда отправлялись заказы, отсортировать по странам и городам (таблица orders, колонки ship_country, ship_city)
 
