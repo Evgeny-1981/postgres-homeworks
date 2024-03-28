@@ -24,3 +24,4 @@ WHERE discontinued != '1'
 SELECT min(unit_price) as min, max(unit_price) as max
 FROM products
 WHERE units_in_stock >= '20' and discontinued != '1'
+
