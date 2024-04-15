@@ -4,6 +4,7 @@
 SELECT COMPANY_NAME, FIRST_NAME, LAST_NAME
 FROM CUSTOMERS
 INNER JOIN EMPLOYEES USING(CITY)
+
 WHERE SHIPPERS.COMPANY_NAME LIKE '%United Package%'
 
 -- 2. Наименование продукта, количество товара (product_name и units_in_stock в табл products),
