@@ -1,20 +1,33 @@
 -- Напишите запросы, которые выводят следующую информацию:
 -- 1. Название компании заказчика (company_name из табл. customers) и ФИО сотрудника, работающего над заказом этой компании (см таблицу employees),
 -- когда и заказчик и сотрудник зарегистрированы в городе London, а доставку заказа ведет компания United Package (company_name в табл shippers)
-SELECT COMPANY_NAME, FIRST_NAME, LAST_NAME
-FROM CUSTOMERS
-INNER JOIN EMPLOYEES USING(CITY)
+SELECT C.COMPANY_NAME, CONCAT(E.FIRST_NAME, ' ', E.LAST_NAME) AS FIO
+FROM ORDERS O
+JOIN CUSTOMERS C USING(CUSTOMER_ID)
+JOIN EMPLOYEES E USING(EMPLOYEE_ID)
+JOIN SHIPPERS S ON S.shipper_id=O.SHIP_VIA
+WHERE C.CITY='London' AND E.CITY='London' AND S.COMPANY_NAME='United Package'
 
-WHERE SHIPPERS.COMPANY_NAME LIKE '%United Package%'
 
 -- 2. Наименование продукта, количество товара (product_name и units_in_stock в табл products),
 -- имя поставщика и его телефон (contact_name и phone в табл suppliers) для таких продуктов,
 -- которые не сняты с продажи (поле discontinued) и которых меньше 25 и которые в категориях Dairy Products и Condiments.
 -- Отсортировать результат по возрастанию количества оставшегося товара.
-
+SELECT p.product_name, p.units_in_stock, s.contact_name, s.phone
+FROM products p
+JOIN suppliers s USING(supplier_id)
+JOIN categories c USING(category_id)
+WHERE p.discontinued='0' AND p.units_in_stock<'25'
+AND c.category_name IN ('Dairy Products', 'Condiments')
+ORDER BY p.units_in_stock ASC
 
 -- 3. Список компаний заказчиков (company_name из табл customers), не сделавших ни одного заказа
-
+SELECT c.company_name
+FROM customers c
+WHERE NOT EXISTS(SELECT 1 FROM orders o WHERE c.customer_id=o.customer_id)
 
 -- 4. уникальные названия продуктов, которых заказано ровно 10 единиц (количество заказанных единиц см в колонке quantity табл order_details)
 -- Этот запрос написать именно с использованием подзапроса.
+SELECT P.PRODUCT_NAME
+FROM PRODUCTS P
+WHERE P.PRODUCT_ID IN (SELECT OD.PRODUCT_ID FROM ORDER_DETAILS OD WHERE OD.QUANTITY=10)
